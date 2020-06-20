@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class BookListActivity extends AppCompatActivity {
     private ProgressBar mProgress;
@@ -46,7 +47,7 @@ public class BookListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             TextView tvResults = (TextView) findViewById(R.id.tvResponse);
-            tvResults.setText(result);
+            //tvResults.setText(result);
             TextView tvError = findViewById(R.id.tvError);
             mProgress.setVisibility(View.INVISIBLE);
             if(result == null) {
@@ -56,6 +57,13 @@ public class BookListActivity extends AppCompatActivity {
                 tvError.setVisibility(View.INVISIBLE);
                 tvResults.setVisibility(View.VISIBLE);
             }
+
+            ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
+            String resultString = "";
+            for(Book book: books){
+                resultString = resultString + book.title + "\n" + book.publishedDate + "\n\n";
+            }
+            tvResults.setText(resultString);
         }
 
         @Override
