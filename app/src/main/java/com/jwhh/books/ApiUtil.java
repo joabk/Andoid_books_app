@@ -81,17 +81,19 @@ public class ApiUtil {
             for(int i=0; i<numberOfBooks; i++){
                 JSONObject bookJSON = arrayBooks.getJSONObject(i);
                 JSONObject volumeInfoJSON = bookJSON.getJSONObject(VOLUMEINFO);
-                int authorNum = bookJSON.getJSONArray(AUTHORS).length();
-                String authors[] = new String[authorNum];
-                for(int j = 0; j<authorNum; j++){
-                    authors[j] = bookJSON.getJSONArray(VOLUMEINFO).get(j).toString();
-                }
+//                int authorNum = bookJSON.getJSONArray(AUTHORS).length();
+//                String authors[] = new String[authorNum];
+//                if(authorNum>0){
+//                    for(int j = 0; j<authorNum; j++){
+//                        authors[j] = bookJSON.getJSONArray(VOLUMEINFO).get(j).toString();
+//                    }
+//                }
 
                 Book book = new Book(
-                        bookJSON.getString(ID),
-                        volumeInfoJSON.getString(TITLE),
-                        (volumeInfoJSON.isNull(SUB_TITLE))?"":volumeInfoJSON.getString(SUB_TITLE),
-                        authors,
+                        (bookJSON.isNull(ID))?"BOOKID":bookJSON.getString(ID),
+                        (volumeInfoJSON.isNull(TITLE))?"TITLE": volumeInfoJSON.getString(TITLE),
+                        (volumeInfoJSON.isNull(SUB_TITLE))?"SUBTITLE":volumeInfoJSON.getString(SUB_TITLE),
+                        //(volumeInfoJSON.isNull(AUTHORS)) ? null : authors,
                         volumeInfoJSON.getString(PUBLISHER),
                         volumeInfoJSON.getString(PUBLISHED_DATE)
                 );
