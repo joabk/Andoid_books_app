@@ -1,6 +1,8 @@
 package com.jwhh.books;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +17,14 @@ import java.util.ArrayList;
 
 public class BookListActivity extends AppCompatActivity {
     private ProgressBar mProgress;
+    private RecyclerView rv_books;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_list_activity);
+        rv_books = (RecyclerView)findViewById(R.id.rv_books);
+        LinearLayoutManager booksLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
+        rv_books.setLayoutManager(booksLayoutManager);
 //        try {
             URL bookUrl = ApiUtil.buildUrl("cooking");
             new BookQueryTask().execute(bookUrl);
@@ -46,24 +51,25 @@ public class BookListActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            TextView tvResults = (TextView) findViewById(R.id.tvResponse);
+
             //tvResults.setText(result);
             TextView tvError = findViewById(R.id.tvError);
             mProgress.setVisibility(View.INVISIBLE);
             if(result == null) {
                 tvError.setVisibility(View.VISIBLE);
-                tvResults.setVisibility(View.INVISIBLE);
+                rv_books.setVisibility(View.INVISIBLE);
             }else{
                 tvError.setVisibility(View.INVISIBLE);
-                tvResults.setVisibility(View.VISIBLE);
+                rv_books.setVisibility(View.VISIBLE);
             }
 
             ArrayList<Book> books = ApiUtil.getBooksFromJson(result);
-            String resultString = "";
-            for(Book book: books){
-                resultString = resultString + book.title + "\n" + book.publishedDate + "\n\n";
-            }
-            tvResults.setText(resultString);
+//            String resultString = "";
+//            for(Book book: books){
+//                resultString = resultString + book.title + "\n" + book.publishedDate + "\n\n";
+//            }
+            BooksAdapter adapter = new BooksAdapter(books);
+            rv_books.setAdapter(adapter);
         }
 
         @Override

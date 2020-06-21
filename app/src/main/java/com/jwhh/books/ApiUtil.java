@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ApiUtil {
@@ -64,8 +65,8 @@ public class ApiUtil {
     }
 
     public static ArrayList<Book> getBooksFromJson(String json){
-        final String ID = "ID";
-        final String TITLE = "TITLE";
+        final String ID = "id";
+        final String TITLE = "title";
         final String SUB_TITLE = "subTitle";
         final String AUTHORS = "authors";
         final String PUBLISHER = "publisher";
@@ -78,32 +79,42 @@ public class ApiUtil {
             JSONObject jsonBooks = new JSONObject(json);
             JSONArray arrayBooks = jsonBooks.getJSONArray(ITEMS);
             int numberOfBooks = arrayBooks.length();
-            for(int i=0; i<numberOfBooks; i++){
+
+            for(int i=0; i<=numberOfBooks; i++){
                 JSONObject bookJSON = arrayBooks.getJSONObject(i);
                 JSONObject volumeInfoJSON = bookJSON.getJSONObject(VOLUMEINFO);
-//                int authorNum = bookJSON.getJSONArray(AUTHORS).length();
-//                String authors[] = new String[authorNum];
-//                if(authorNum>0){
-//                    for(int j = 0; j<authorNum; j++){
-//                        authors[j] = bookJSON.getJSONArray(VOLUMEINFO).get(j).toString();
-//                    }
-//                }
+                //Log.d("Joab checking jsonBook", "Joab debug jsonBook" + bookJSON.getString(ID));
+                //Log.d("Joab checking 22", "Joab debug" + volumeInfoJSON.getJSONArray(AUTHORS).length());
+               int authorNum = volumeInfoJSON.getJSONArray(AUTHORS).length();
+                String authors[] = new String[authorNum];
+                if(authorNum>0){
+                    for(int j = 0; j<authorNum; j++){
+                        authors[j] = volumeInfoJSON.getJSONArray(AUTHORS).get(j).toString();
+                        //Log.d("Joab checking jsonBook", "Joab debug jsonBook: " + volumeInfoJSON.getJSONArray(AUTHORS).get(j).toString());
+                        //System.exit(1);
+                    }
+                }
 
                 Book book = new Book(
-                        (bookJSON.isNull(ID))?"BOOKID":bookJSON.getString(ID),
-                        (volumeInfoJSON.isNull(TITLE))?"TITLE": volumeInfoJSON.getString(TITLE),
-                        (volumeInfoJSON.isNull(SUB_TITLE))?"SUBTITLE":volumeInfoJSON.getString(SUB_TITLE),
-                        //(volumeInfoJSON.isNull(AUTHORS)) ? null : authors,
-                        volumeInfoJSON.getString(PUBLISHER),
-                        volumeInfoJSON.getString(PUBLISHED_DATE)
+                    bookJSON.getString(ID),
+                    volumeInfoJSON.getString(TITLE),
+                    (volumeInfoJSON.isNull(SUB_TITLE))?"SUBTITLE":volumeInfoJSON.getString(SUB_TITLE),
+                    authors,
+                    volumeInfoJSON.getString(PUBLISHER),
+                    volumeInfoJSON.getString(PUBLISHED_DATE)
                 );
                 books.add(book);
+                //Log.d("Joab checking jsonBook:", "Joab debug jsonBook" + Arrays.toString(authors));
+                //System.exit(1);
             }
         }
         catch (JSONException e){
             //e.printStackTrace();
             Log.d("Error", e.toString());
         }
+        //System.out.print("Books are"+books);
+        //Log.d("Books are", String.valueOf(books));
         return books;
     }
+
 }
