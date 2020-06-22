@@ -2,6 +2,7 @@ package com.jwhh.books;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         return books.size();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder{
+    public class BookViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
 
         TextView tvTitle;
         TextView tvAuthors;
@@ -51,20 +52,30 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             tvDate = (TextView)itemView.findViewById(R.id.tvPublishedDate);
             tvPublisher = (TextView)itemView.findViewById(R.id.tvPublisher);
 
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Book book){
             tvTitle.setText(book.title);
-            String Authors = "";
-            int i = 0;
-            for(String author:book.authors){
-                Authors+=author;
-                i++;
-                if(i<book.authors.length) Authors+=", ";
-            }
-            tvAuthors.setText(Authors);
+//            String Authors = book.authors;
+//            int i = 0;
+//            for(String author:book.authors){
+//                Authors+=author;
+//                i++;
+//                if(i<book.authors.length) Authors+=", ";
+//            }
+            tvAuthors.setText(book.authors);
             tvDate.setText(book.publishedDate);
             tvPublisher.setText(book.publisher);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Book selectedBook = books.get(position);
+            Intent intent = new Intent(view.getContext(), BookDetail.class);
+            intent.putExtra("Book", selectedBook);
+            view.getContext().startActivity(intent);
         }
     }
 }

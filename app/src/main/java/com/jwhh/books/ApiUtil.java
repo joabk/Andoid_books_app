@@ -72,7 +72,8 @@ public class ApiUtil {
         final String PUBLISHER = "publisher";
         final String PUBLISHED_DATE = "publishedDate";
         final String ITEMS = "items";
-        final  String VOLUMEINFO = "volumeInfo";
+        final String VOLUMEINFO = "volumeInfo";
+        final String DESCRIPTION = "description";
 
         ArrayList<Book> books = new ArrayList<Book>();
         try{
@@ -101,7 +102,8 @@ public class ApiUtil {
                     (volumeInfoJSON.isNull(SUB_TITLE))?"SUBTITLE":volumeInfoJSON.getString(SUB_TITLE),
                     authors,
                     volumeInfoJSON.getString(PUBLISHER),
-                    volumeInfoJSON.getString(PUBLISHED_DATE)
+                    volumeInfoJSON.getString(PUBLISHED_DATE),
+                    volumeInfoJSON.getString(DESCRIPTION)
                 );
                 books.add(book);
                 //Log.d("Joab checking jsonBook:", "Joab debug jsonBook" + Arrays.toString(authors));
