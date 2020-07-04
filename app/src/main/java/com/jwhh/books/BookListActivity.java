@@ -27,6 +27,7 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_list_activity);
+
         rv_books = (RecyclerView)findViewById(R.id.rv_books);
         LinearLayoutManager booksLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         rv_books.setLayoutManager(booksLayoutManager);

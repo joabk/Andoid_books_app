@@ -3,6 +3,7 @@ package com.jwhh.books;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     public class BookViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
 
         TextView tvTitle;
+        TextView tvSubTitle;
         TextView tvAuthors;
         TextView tvDate;
         TextView tvPublisher;
@@ -48,6 +50,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
+            tvSubTitle = (TextView)itemView.findViewById(R.id.tvSubTitle);
             tvAuthors = (TextView)itemView.findViewById(R.id.tvAuthors);
             tvDate = (TextView)itemView.findViewById(R.id.tvPublishedDate);
             tvPublisher = (TextView)itemView.findViewById(R.id.tvPublisher);
@@ -57,6 +60,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
         public void bind(Book book){
             tvTitle.setText(book.title);
+            //Log.d("Joab checking errors", book.subTitle);
+            //System.exit(1);
+            //tvSubTitle.setText(book.subTitle);
 //            String Authors = book.authors;
 //            int i = 0;
 //            for(String author:book.authors){
