@@ -1,11 +1,13 @@
 package com.jwhh.books;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -31,8 +34,20 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
         rv_books = (RecyclerView)findViewById(R.id.rv_books);
         LinearLayoutManager booksLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false);
         rv_books.setLayoutManager(booksLayoutManager);
+        Intent intent = getIntent();
+        String query = intent.getStringExtra("Query");
 //        try {
-            URL bookUrl = ApiUtil.buildUrl("cooking");
+            URL bookUrl = null;
+            if(query==null || query.isEmpty()){
+                bookUrl = ApiUtil.buildUrl("cooking");
+            }else{
+                try {
+                    bookUrl = new URL(query);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+
             new BookQueryTask().execute(bookUrl);
             //String jsonResults = ApiUtil.getJson(bookUrl);
 
@@ -59,6 +74,18 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
             Log.d("Error", e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_advanced_search:
+                Intent intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -97,6 +124,7 @@ public class BookListActivity extends AppCompatActivity implements SearchView.On
             }else{
                 tvError.setVisibility(View.INVISIBLE);
                 rv_books.setVisibility(View.VISIBLE);
+
             }
 
             ArrayList<Book> books = ApiUtil.getBooksFromJson(result);

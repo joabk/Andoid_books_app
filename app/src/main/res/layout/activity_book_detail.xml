@@ -44,8 +44,9 @@
 
     <TextView
         android:id="@+id/tvSubTitle"
-        android:textSize="24sp"
-        android:layout_width="match_parent"
+        android:textSize="24dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="39dp"
         android:layout_marginLeft="@dimen/standard_margin"
@@ -58,9 +59,9 @@
 
     <TextView
         android:id="@+id/tvAuthors"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
+        android:textColor="@color/colorAccent"
+        android:layout_width="116dp"
+        android:layout_height="37dp"
         android:layout_marginTop="68dp"
         android:text="@{Book.authors}"
         android:textSize="18sp"
